@@ -11,6 +11,8 @@ def user_input():
             str_help = ('quit -- shut down the bot\n'
                         'settings -- change settings')
             print(str_help)
+        elif command != '':
+            print('Invalid command entered!')
             
 def stop_bot():
     print('Shutting down bot...')
