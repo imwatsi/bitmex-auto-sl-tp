@@ -8,7 +8,8 @@ def user_input():
         if command == 'quit':
             stop_bot()
         elif command == 'help':
-            str_help = ('quit -- shut down the bot\n'
+            str_help = ('\n----------HELP----------\n\n'
+                        'quit -- shut down the bot\n'
                         'settings -- change settings')
             print(str_help)
         elif command != '':
