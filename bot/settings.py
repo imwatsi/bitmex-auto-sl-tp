@@ -1,7 +1,6 @@
 import json
 import os
 import time
-import bot
 
 def check_integrity(data=None):
     if data == None:
