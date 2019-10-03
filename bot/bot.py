@@ -66,6 +66,7 @@ def settings_edit():
     # list accounts
     accounts = config['accounts']
     max_acc = len(accounts)
+
     # display accounts
     i = 0
     str_display = ''
@@ -74,17 +75,20 @@ def settings_edit():
                         %(i, a['api']['key'], a['api']['secret'])
         i += 1
     print(str_display)
+
     # wait for valid input (existing acc no) TODO: add new account
     print('Type in account number, e.g. "0"')
     current_accs = []
     for a in range(0, max_acc):
         current_accs.append(str(a))
     inp_acc = input_hook(current_accs)
+
     # handle cancel command
     if inp_acc == None:
         settings_mode = False
         print('Settings mode disabled.\n')
         return
+
     # show account settings
     acc = int(inp_acc)
     _acc = accounts[int(inp_acc)]
@@ -97,6 +101,7 @@ def settings_edit():
     str_display += 'SL Distance: %s\nSL Trail: %s\nTP Distance: %s\n'\
                         %(sl_dist, sl_trail, tp_dist)
     print(str_display)
+
     # choose setting to change TODO: add API Key management
     while True:
         print('Type "sl distance 1" to set a stop loss distance of 1%. Or type "help" for more info.')
@@ -125,6 +130,7 @@ def settings_edit():
                 config = settings.get_settings() # reload settings
                 print('No changes were saved.')
                 break
+            
     settings_mode = False
     print('Settings mode disabled.\n')
 
