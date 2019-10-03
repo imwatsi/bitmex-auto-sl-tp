@@ -67,7 +67,7 @@ def save_settings(new_config):
     if valid:
         # save settings
         f = open('config.json', 'w')
-        f.write(json.dumps(conf))
+        f.write(json.dumps(new_config))
         f.close()
         print('Saved successfully.')
         
