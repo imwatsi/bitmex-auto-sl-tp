@@ -6,7 +6,7 @@ A bot that tracks open positions on BitMEX and automatically places and manages 
 ## Features to be included in beta release (WIP)
 
 - Single account access, with potential to implement multiple account access later
-- 2 trading pairs (XBTUSD and ETHUSD)
+- 1 trading pair (XBTUSD)
 - Automatic Stop Loss and Take Profit orders, with optional "trail" feature, for dynamic orders
 - Robust error handling
 
@@ -21,3 +21,9 @@ A bot that tracks open positions on BitMEX and automatically places and manages 
 - [ ] Core bot logic
 - [ ] Order placement and management
 - [ ] Error handling
+
+## Future updates
+
+- [ ] GUI
+- [ ] Additional trading pairs
+- [ ] Per-market settings (SL and TP)
