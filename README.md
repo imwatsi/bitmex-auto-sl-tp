@@ -24,6 +24,7 @@ A bot that tracks open positions on BitMEX and automatically places and manages 
 
 ## Future updates
 
-- [ ] GUI
 - [ ] Additional trading pairs
 - [ ] Per-market settings (SL and TP)
+- [ ] Multiple profit targets
+- [ ] GUI
