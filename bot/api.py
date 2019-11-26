@@ -47,20 +47,22 @@ class BitmexApi:
             e_path += f'?{query}'
             url += f'?{query}'
         expires = int(round(time.time()) + 100)
-        if payload:
-            _payload = str(payload.replace(' ', '')) # remove extra spaces
-            signature = self.generate_signature(method, e_path, expires, _payload)
-        else:
-            signature = self.generate_signature(method, e_path, expires, '')
         headers = {
             'api-expires': str(expires),
             'api-key': self.api_key,
-            'api-signature': signature
         }
+        if payload is not None:
+            _payload = str(payload.replace(' ', '')) # remove extra spaces
+            signature = self.generate_signature(method, e_path, expires, _payload)
+            headers['Content-type'] = 'application/json'
+        else:
+            signature = self.generate_signature(method, e_path, expires, '')
+            
+        headers['api-signature'] = signature
         
         while True:
             try:
-                if payload:
+                if payload is not None:
                     req = requests.request(method, url, headers=headers, data=_payload)
                 else:
                     req = requests.request(method, url, headers=headers)
