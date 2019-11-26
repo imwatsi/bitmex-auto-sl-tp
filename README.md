@@ -17,7 +17,7 @@ A bot that tracks open positions on BitMEX and automatically places and manages 
 
 - [x] Basic settings module
 - [x] Core command-line interface CLI
-- [ ] API module
+- [x] API module
 - [ ] Core bot logic
 - [ ] Order placement and management
 - [ ] Error handling
