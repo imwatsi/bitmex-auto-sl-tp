@@ -1,6 +1,7 @@
 import settings
 import os
 import time
+from api import BitmexApi
 from threading import Thread
 
 settings_mode = False
@@ -11,6 +12,7 @@ config = {}
 def user_input():
     global settings_mode
     while True:
+        print('\nType "start" to run the bot, or "settings" to change settings. Type "help" to see available commands.')
         if settings_mode:
             time.sleep(1)
             continue
@@ -34,8 +36,8 @@ def user_input():
 def input_hook(valid_opts):
     str_opts = ''
     for x in valid_opts:
-        str_opts += '"%s" ' %(x)
-    str_opts += '"cancel"'
+        str_opts += '\n%s' %(x)
+    str_opts += '\ncancel'
     while True:
         inp = input().strip().lower()
         if inp == 'cancel':
@@ -54,8 +56,11 @@ def input_hook(valid_opts):
                 if k in inp:
                     _value = inp.replace(k,'').strip()
                     try: 
-                        float(_value)
-                        valid_opts[k] = _value
+                        if k in ['api key', 'api secret']:
+                            valid_opts[k] = _value
+                        else:
+                            float(_value)
+                            valid_opts[k] = _value
                         return valid_opts
                     except:
                         break
@@ -71,16 +76,17 @@ def settings_edit():
     i = 0
     str_display = ''
     for a in accounts:
-        str_display += 'Acc: %s\nAPI KEY: %s\nAPI SECRET: %s\n'\
+        str_display += '\nAcc: %s\nAPI KEY: %s\nAPI SECRET: %s\n'\
                         %(i, a['api']['key'], a['api']['secret'])
         i += 1
     print(str_display)
 
     # wait for valid input (existing acc no) TODO: add new account
-    print('Type in account number, e.g. "0"')
+    print('Type in account number, e.g. "0" or "new" to add a new one')
     current_accs = []
     for a in range(0, max_acc):
         current_accs.append(str(a))
+    current_accs.append('new')
     inp_acc = input_hook(current_accs)
 
     # handle cancel command
@@ -88,7 +94,21 @@ def settings_edit():
         settings_mode = False
         print('Settings mode disabled.\n')
         return
-
+    
+    # handle new acc
+    if inp_acc == 'new':
+        new_acc = {
+            'api': {'key': '', 'secret': ''},
+            'sl': {'dist': 0.02, 'trail': 0.005},
+            'tp': {'dist': 0.05}
+        }
+        accounts.append(new_acc)
+        config['accounts'] = accounts
+        print('New account added.')
+        settings.save_settings(config)
+        settings_mode = False
+        print('Settings mode disabled.\n')
+        return
     # show account settings
     acc = int(inp_acc)
     _acc = accounts[int(inp_acc)]
@@ -102,10 +122,18 @@ def settings_edit():
                         %(sl_dist, sl_trail, tp_dist)
     print(str_display)
 
-    # choose setting to change TODO: add API Key management
+    # choose setting to change
     while True:
-        print('Type "sl distance 1" to set a stop loss distance of 1%. Or type "help" for more info.')
-        _modif = input_hook({'sl distance': '', 'sl trail': '', 'tp distance': ''})
+        print('\nType "sl distance 1" to set a stop loss distance of 1%. Or type "help" for a list of available commands.')
+        _modif = input_hook(
+            {
+                'sl distance': '',
+                'sl trail': '',
+                'tp distance': '',
+                'api key': '',
+                'api secret': ''
+            }
+        )
         if _modif == None:
             break
         if _modif['sl distance'] is not '':
@@ -120,6 +148,14 @@ def settings_edit():
             # change TP Distance
             _value = float(_modif['tp distance'])
             config['accounts'][acc]['tp']['dist'] = _value / 100
+        elif _modif['api key'] is not '':
+            # change api key
+            _value = str(_modif['api key']).strip()
+            config['accounts'][acc]['api']['key'] = _value
+        elif _modif['api secret'] is not '':
+            # change api secret
+            _value = str(_modif['api secret']).strip()
+            config['accounts'][acc]['api']['secret'] = _value
         # save settings prompt
         while True:
             save = input('Save changes? Y/N').lower().strip()
@@ -147,6 +183,6 @@ if __name__ == '__main__':
     print('done\n')
     # init CLI mode
     Thread(target=user_input).start()
-    print('Type "start" to run the bot. Type "help" to see available commands.')
+    
 
     
