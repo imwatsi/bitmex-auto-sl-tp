@@ -27,7 +27,6 @@ class BitmexApi:
     def start(self):
         print('API connection started')
         self.toggle_updates = True
-        Thread(target=self.account_updates).start()
         time.sleep(5)  # wait a bit
 
     @classmethod
