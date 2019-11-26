@@ -3,6 +3,7 @@ import os
 import time
 from api import BitmexApi
 from threading import Thread
+from utils import stop_bot
 
 settings_mode = False
 config = {}
@@ -169,11 +170,6 @@ def settings_edit():
             
     settings_mode = False
     print('Settings mode disabled.\n')
-
-def stop_bot():
-    print('Shutting down bot...')
-    # perform any pre-exit ops
-    os._exit(0)
 
 if __name__ == '__main__':
     print('BitMEX Auto Stop Loss and Take Profit Bot')
